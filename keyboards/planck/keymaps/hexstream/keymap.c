@@ -155,13 +155,31 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case INSERT_PARENTHESES:
       if (record->event.pressed) {
-        SEND_STRING("()" SS_TAP(X_LEFT));
+        if (get_mods() & MOD_MASK_SHIFT) {
+          SEND_STRING(SS_UP(X_LSHIFT));
+          SEND_STRING(SS_RALT("q" SS_TAP(X_NONUS_HASH)) SS_TAP(X_LEFT)); // {}
+          SEND_STRING(SS_DOWN(X_LSHIFT));
+        } else if (get_mods() & MOD_MASK_ALT) {
+          SEND_STRING(SS_UP(X_LALT));
+          SEND_STRING(SS_RALT("-=") SS_TAP(X_LEFT)); // []
+          SEND_STRING(SS_DOWN(X_LALT));
+        } else {
+          SEND_STRING("()" SS_TAP(X_LEFT)); // ()
+        }
       }
       break;
 
     case INSERT_DOUBLE_QUOTES:
       if (record->event.pressed) {
-        SEND_STRING(SS_LSFT("22") SS_TAP(X_LEFT));
+        if (get_mods() & MOD_MASK_SHIFT) {
+          SEND_STRING("ww" SS_UP(X_LSHIFT) SS_TAP(X_LEFT) SS_DOWN(X_LSHIFT)); // ''
+        } else if (get_mods() & MOD_MASK_ALT) {
+          SEND_STRING(SS_UP(X_LALT));
+          SEND_STRING(SS_TAP(X_NONUS_HASH) SS_LSFT(SS_TAP(X_NONUS_HASH)) SS_TAP(X_LEFT)); // <>
+          SEND_STRING(SS_DOWN(X_LALT));
+        } else {
+          SEND_STRING(SS_LSFT("22") SS_TAP(X_LEFT)); // ""
+        }
       }
       break;
 
