@@ -170,7 +170,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           SEND_STRING(SS_LSFT("22") SS_TAP(X_LEFT)); // ""
           SEND_STRING(SS_DOWN(X_LALT));
         } else if (get_mods() & MOD_MASK_SHIFT) {
-          SEND_STRING(SS_LSFT("88") SS_TAP(X_LEFT)); // **
+          SEND_STRING("88" SS_UP(X_LSHIFT) SS_TAP(X_LEFT) SS_DOWN(X_LSHIFT)); // **
         } else {
           SEND_STRING("()" SS_TAP(X_LEFT)); // ()
         }
