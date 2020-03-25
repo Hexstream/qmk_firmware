@@ -52,7 +52,7 @@ enum planck_layers {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_BASE] = LAYOUT_planck_grid(KC_TAB,KC_Q,KC_W,KC_E,KC_R,KC_T,KC_Y,KC_U,KC_I,KC_O,KC_P,KC_BSPACE,KC_GRAVE,KC_A,KC_S,KC_D,KC_F,KC_G,KC_H,KC_J,KC_K,KC_L,KC_SCOLON,KC_QUOTE,KC_DELETE,KC_Z,KC_X,KC_C,KC_V,KC_B,KC_N,KC_M,KC_COMMA,KC_DOT,KC_SLASH,KC_ENTER,TOGGLE_LAYER_COLOR,RALT_T(KC_F15),LOWER,RAISE,KC_LCTRL,KC_SPACE,KC_NO,KC_LALT,KC_LSHIFT,KC_DOWN,KC_UP,TT(4)),
 
-  [_LOWER] = LAYOUT_planck_grid(DYN_REC_STOP,KC_F11,KC_F12,KC_F13,KC_PGUP,KC_F15,KC_END,KC_F17,KC_F18,KC_F19,KC_F20,LSFT(KC_2),DYN_REC_START1,RALT(KC_Q),KC_NONUS_HASH,RALT(KC_MINUS),LSFT(KC_9),DYN_MACRO_PLAY1,DYN_MACRO_PLAY2,LSFT(KC_0),RALT(KC_EQUAL),LSFT(KC_NONUS_HASH),RALT(KC_NONUS_HASH),INSERT_CURLY_BRACES,DYN_REC_START2,LCTL(LGUI(KC_1)),LCTL(LGUI(KC_2)),LCTL(LGUI(KC_3)),LCTL(LGUI(KC_4)),LCTL(LGUI(KC_0)),KC_HOME,KC_F14,KC_EQUAL,KC_PGDOWN,LSFT(KC_NONUS_HASH),KC_KP_ENTER,LGUI(KC_PGDOWN),LGUI(KC_PGUP),KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_LEFT,KC_NO,KC_TRANSPARENT,KC_TRANSPARENT,LGUI(KC_D),LSFT(KC_RBRACKET),KC_TRANSPARENT),
+  [_LOWER] = LAYOUT_planck_grid(DYN_REC_STOP,KC_F11,KC_F12,KC_F13,KC_PGUP,KC_F15,KC_END,KC_F17,KC_F18,KC_F19,KC_F20,LSFT(KC_2),DYN_REC_START1,RALT(KC_Q),KC_NONUS_HASH,RALT(KC_MINUS),LSFT(KC_9),DYN_MACRO_PLAY1,DYN_MACRO_PLAY2,LSFT(KC_0),RALT(KC_EQUAL),LSFT(KC_NONUS_HASH),RALT(KC_NONUS_HASH),INSERT_CURLY_BRACES,DYN_REC_START2,LCTL(LGUI(KC_1)),LCTL(LGUI(KC_2)),LCTL(LGUI(KC_3)),LCTL(LGUI(KC_4)),LCTL(LGUI(KC_0)),KC_HOME,KC_F14,KC_EQUAL,KC_PGDOWN,LSFT(KC_NONUS_HASH),KC_KP_ENTER,LGUI(KC_PGDOWN),LGUI(KC_PGUP),KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,KC_LEAD,KC_NO,KC_TRANSPARENT,KC_TRANSPARENT,LGUI(KC_D),LSFT(KC_RBRACKET),KC_TRANSPARENT),
 
   [_RAISE] = LAYOUT_planck_grid(KC_ESCAPE,KC_F1,KC_F2,KC_F3,KC_UP,KC_F5,KC_RIGHT,KC_F7,KC_F8,KC_F9,KC_F10,KC_LBRACKET,RALT(KC_GRAVE),KC_1,KC_2,KC_3,KC_4,KC_5,KC_6,KC_7,KC_8,KC_9,KC_0,INSERT_PARENTHESES,RALT(KC_2),LGUI(KC_1),LGUI(KC_2),LGUI(KC_3),LGUI(KC_4),KC_F6,KC_LEFT,RALT(KC_Z),KC_MINUS,KC_DOWN,KC_NONUS_HASH,LSFT(KC_3),KC_LGUI,KC_F4,KC_TRANSPARENT,KC_TRANSPARENT,KC_TRANSPARENT,LGUI(KC_A),KC_NO,KC_TRANSPARENT,KC_TRANSPARENT,KC_PSCREEN,KC_RBRACKET,KC_TRANSPARENT),
 
@@ -240,6 +240,8 @@ void encoder_update(bool clockwise) {
     }
 }
 
+LEADER_EXTERNS();
+
 void matrix_scan_user(void) {
 #ifdef AUDIO_ENABLE
     if (muse_mode) {
@@ -254,6 +256,175 @@ void matrix_scan_user(void) {
         muse_counter = (muse_counter + 1) % muse_tempo;
     }
 #endif
+    LEADER_DICTIONARY() {
+      leading = false;
+      leader_end();
+
+      SEQ_ONE_KEY(KC_LEFT) {
+        send_unicode_string("←");
+      }
+
+      SEQ_ONE_KEY(KC_RIGHT) {
+        send_unicode_string("→");
+      }
+
+      SEQ_ONE_KEY(KC_UP) {
+        send_unicode_string("↑");
+      }
+
+      SEQ_ONE_KEY(KC_DOWN) {
+        send_unicode_string("↓");
+      }
+
+      SEQ_ONE_KEY(KC_V) {
+        send_unicode_string("✔"); // Check mark
+      }
+
+      SEQ_ONE_KEY(KC_X) {
+        send_unicode_string("✘"); // Cross mark
+      }
+
+      SEQ_TWO_KEYS(KC_T, KC_M) {
+        send_unicode_string("™"); // TM
+      }
+
+      SEQ_FOUR_KEYS(KC_T, KC_H, KC_U, KC_P) {
+        send_unicode_string("👍"); // Thumbs up
+      }
+
+      SEQ_FOUR_KEYS(KC_T, KC_H, KC_D, KC_N) {
+        send_unicode_string("👎"); // Thumbs down
+      }
+
+      SEQ_FOUR_KEYS(KC_W, KC_A, KC_V, KC_E) {
+        send_unicode_string("👏"); // Hand wave
+      }
+
+      SEQ_FOUR_KEYS(KC_P, KC_E, KC_R, KC_F) {
+        send_unicode_string("👌"); // Perfect
+      }
+
+      SEQ_FOUR_KEYS(KC_F, KC_I, KC_R, KC_E) {
+        send_unicode_string("🔥"); // Fire
+      }
+
+      SEQ_FIVE_KEYS(KC_E, KC_Y, KC_E, KC_B, KC_R) {
+        send_unicode_string("🤨"); // Raised eyebrow
+      }
+
+      SEQ_TWO_KEYS(KC_F, KC_U) {
+        send_unicode_string("🖕"); // Fuck you
+      }
+
+      SEQ_THREE_KEYS(KC_J, KC_O, KC_Y) {
+        send_unicode_string("😂"); // Joy
+      }
+
+      SEQ_FOUR_KEYS(KC_R, KC_O, KC_F, KC_L) {
+        send_unicode_string("🤣"); // ROFL
+      }
+
+      SEQ_FIVE_KEYS(KC_C, KC_R, KC_A, KC_Z, KC_Y) {
+        send_unicode_string("🤪"); // Crazy face
+      }
+
+      SEQ_FIVE_KEYS(KC_M, KC_O, KC_N, KC_O, KC_C) {
+        send_unicode_string("🧐"); // Monocle
+      }
+
+      SEQ_FIVE_KEYS(KC_B, KC_R, KC_A, KC_I, KC_N) {
+        send_unicode_string("🧠"); // Brain
+      }
+
+      SEQ_FIVE_KEYS(KC_S, KC_W, KC_E, KC_A, KC_T) {
+        send_unicode_string("😅"); // Embarrassed
+      }
+
+      SEQ_THREE_KEYS(KC_C, KC_R, KC_Y) {
+        send_unicode_string("😭"); // Crying
+      }
+
+      SEQ_THREE_KEYS(KC_B, KC_O, KC_W) {
+        send_unicode_string("🙇"); // Bowing
+      }
+
+      SEQ_FIVE_KEYS(KC_H, KC_A, KC_N, KC_D, KC_S) {
+        send_unicode_string("🙏"); // Hands joined (pleading or thanks)
+      }
+
+      SEQ_FIVE_KEYS(KC_S, KC_C, KC_R, KC_E, KC_A) {
+        send_unicode_string("😱"); // Screaming in fear
+      }
+
+      SEQ_FIVE_KEYS(KC_D, KC_I, KC_Z, KC_Z, KC_Y) {
+        send_unicode_string("😵"); // Dizzy
+      }
+
+      SEQ_FIVE_KEYS(KC_T, KC_R, KC_I, KC_U, KC_M) {
+        send_unicode_string("😤"); // Triumph
+      }
+
+      SEQ_FIVE_KEYS(KC_M, KC_E, KC_T, KC_A, KC_L) {
+        send_unicode_string("🤘"); // Sign of the horns
+      }
+
+      SEQ_THREE_KEYS(KC_Z, KC_Z, KC_Z) {
+        send_unicode_string("😴"); // Sleeping
+      }
+
+      SEQ_FIVE_KEYS(KC_N, KC_O, KC_M, KC_O, KC_U) {
+        send_unicode_string("😶"); // No mouth
+      }
+
+      SEQ_FIVE_KEYS(KC_N, KC_O, KC_G, KC_O, KC_O) {
+        send_unicode_string("🙅"); // No good
+      }
+
+      SEQ_FIVE_KEYS(KC_F, KC_A, KC_C, KC_E, KC_P) {
+        send_unicode_string("🤦"); // Facepalm
+      }
+
+      SEQ_FIVE_KEYS(KC_V, KC_O, KC_M, KC_I, KC_T) {
+        send_unicode_string("🤮"); // Vomit
+      }
+
+      SEQ_FOUR_KEYS(KC_S, KC_H, KC_I, KC_T) {
+        send_unicode_string("💩"); // Shit
+      }
+
+      SEQ_THREE_KEYS(KC_L, KC_O, KC_D) {
+        send_unicode_string("ಠ_ಠ"); // Look of disapproval
+      }
+
+      SEQ_FIVE_KEYS(KC_S, KC_H, KC_R, KC_U, KC_G) {
+        send_unicode_string("¯\\_(ツ)_/¯"); // Shrug
+      }
+
+      SEQ_FIVE_KEYS(KC_L, KC_E, KC_N, KC_N, KC_Y) {
+        send_unicode_string("( ͡° ͜ʖ ͡°)"); // Lenny face
+      }
+
+      SEQ_FIVE_KEYS(KC_S, KC_T, KC_R, KC_O, KC_N) {
+        send_unicode_string("ᕦ( ͡° ͜ʖ ͡°)ᕤ"); // Strong Lenny
+      }
+
+      SEQ_FIVE_KEYS(KC_A, KC_N, KC_G, KC_R, KC_Y) {
+        send_unicode_string("( ͠° ͟ʖ ͡°)"); // Angry Lenny
+      }
+
+      SEQ_THREE_KEYS(KC_S, KC_A, KC_D) {
+        send_unicode_string("( ͡° ʖ̯ ͡°)"); // Sad Lenny
+      }
+
+    }
+}
+
+void leader_start(void) {
+  SEND_STRING("LEAD");
+}
+
+void leader_end(void) {
+  SEND_STRING("UNLEAD");
 }
 
 bool music_mask_user(uint16_t keycode) {
